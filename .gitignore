@@ -7,3 +7,4 @@ __pycache__/
 tickets.json
 ticket_config.json
 authorized_servers.json
+keys.json
