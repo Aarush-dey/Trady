@@ -747,6 +747,12 @@ async def help_cmd(ctx):
 
 @bot.event
 async def on_ready():
+     try:
+        with open("avatar.gif", "rb") as f:
+            await bot.user.edit(avatar=f.read())
+        print("✅ Avatar set!")
+    except Exception as e:
+        print(f"Avatar error: {e}")
     try:
         synced = await bot.tree.sync()
         print(f"✅ Synced {len(synced)} slash commands")
