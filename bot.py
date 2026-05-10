@@ -747,32 +747,13 @@ async def help_cmd(ctx):
 
 @bot.event
 async def on_ready():
-    # Set animated avatar
+# Set animated avatar
     try:
         with open("avatar.gif", "rb") as f:
             await bot.user.edit(avatar=f.read())
         print("✅ Avatar set!")
     except Exception as e:
         print(f"Avatar error: {e}")
-
-    try:
-        synced = await bot.tree.sync()
-        print(f"✅ Synced {len(synced)} slash commands")
-    except Exception as e:
-        print(f"Sync error: {e}")
-
-    bot.add_view(TicketActionsView())
-    bot.add_view(ConfirmTradeView())
-    bot.add_view(CookedView())
-    cfg = get_config()
-    if cfg.get("ticket_options"):
-        bot.add_view(TicketPanelView(cfg["ticket_options"]))
-    print(f"✅ Ticket Bot logged in as {bot.user}")
-    if KEYS_API_URL:
-        print(f"✅ Keys API connected: {KEYS_API_URL}")
-    else:
-        print("⚠️ KEYS_API_URL not set — using local keys.json")
-
 @bot.event
 async def on_message(message):
     if message.author.bot: return
