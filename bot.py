@@ -1160,9 +1160,11 @@ async def help_cmd(ctx):
 `+close` — Close & delete ticket
 `+adduser <@user or ID>` — Add user to ticket
 `+confirmtrade` — Confirm trade buttons
+`+sendmsg <ch_id> <msg>` — Send message to channel
+""", inline=False)
+    h.add_field(name="🌐 MM Info Commands (Support Role)", value="""
 `+mminfoeng` — MM info (English)
 `+mminfofrc` — MM info (Français)
-`+sendmsg <ch_id> <msg>` — Send message to channel
 """, inline=False)
     h.add_field(name="🛡️ Support Ticket Commands (Claim Role)", value="""
 `+sclaim` — Claim a support ticket
