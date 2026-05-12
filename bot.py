@@ -858,6 +858,51 @@ async def mminfoeng(ctx):
     await ctx.send(embed=info_embed)
 
 
+class JaiComprisView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+
+    @discord.ui.button(label="✅ J'ai compris", style=discord.ButtonStyle.success, custom_id="jai_compris_btn")
+    async def jai_compris(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_message(
+            f"{interaction.user.mention} compris! ✅",
+            allowed_mentions=discord.AllowedMentions(users=True)
+        )
+
+
+@bot.command(name="mminfofrc")
+async def mminfofrc(ctx):
+    if not auth_check(ctx): await send_not_authorized(ctx); return
+    cfg = get_config()
+    allowed = [int(r) for r in cfg.get("ticket_support_roles",[])] + [int(r) for r in cfg.get("ticket_free_roles",[])]
+    if not has_any_role(ctx.author, allowed): await ctx.send(embed=emb("❌ No Permission", "You don't have permission.", color=0xED4245)); return
+    info_embed = discord.Embed(title="🛡️ Fonctionnement de la Transaction MM", color=0x5865F2)
+    info_embed.add_field(
+        name="1️⃣ Sécurisation de l'objet",
+        value="Le Vendeur donne l'objet en jeu au MM. Le MM confirme qu'il l'a bien dans son inventaire.",
+        inline=False
+    )
+    info_embed.add_field(
+        name="2️⃣ Paiement Direct",
+        value="Une fois que le MM confirme avoir l'objet, l'Acheteur envoie le paiement PayPal directement au Vendeur (généralement via \"Entre proches\").",
+        inline=False
+    )
+    info_embed.add_field(
+        name="3️⃣ Preuve de Paiement",
+        value="L'Acheteur envoie une capture d'écran du paiement effectué dans le groupe. Le Vendeur confirme qu'il a bien reçu les fonds sur son solde PayPal.",
+        inline=False
+    )
+    info_embed.add_field(
+        name="4️⃣ Remise de l'objet",
+        value="Dès que le Vendeur confirme la réception (\"reçu\"), le MM donne l'objet en jeu à l'Acheteur.",
+        inline=False
+    )
+    info_embed.add_field(
+        name="5️⃣ Transaction Terminée",
+        value="Le MM quitte la discussion et l'échange est validé.",
+        inline=False
+    )
+    await ctx.send(embed=info_embed, view=JaiComprisView())
 
 # ══════════════════════════════════════════════════════════════════════════════
 # ── SUPPORT TICKET COMMANDS ───────────────────────────────────────────────────
@@ -1116,6 +1161,7 @@ async def help_cmd(ctx):
 `+adduser <@user or ID>` — Add user to ticket
 `+confirmtrade` — Confirm trade buttons
 `+mminfoeng` — MM info (English)
+`+mminfofrc` — MM info (Français)
 `+sendmsg <ch_id> <msg>` — Send message to channel
 """, inline=False)
     h.add_field(name="🛡️ Support Ticket Commands (Claim Role)", value="""
