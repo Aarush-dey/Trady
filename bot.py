@@ -857,6 +857,28 @@ async def mminfoeng(ctx):
     info_embed.add_field(name="5️⃣ Done",           value="MM leaves. Trade complete.", inline=False)
     await ctx.send(embed=info_embed)
 
+
+@bot.command(name="mminfofrc")
+async def mminfofrc(ctx):
+    cfg = get_config()
+    allowed = [int(r) for r in cfg.get("ticket_support_roles", [])] + [int(r) for r in cfg.get("ticket_free_roles", [])]
+    if not has_any_role(ctx.author, allowed):
+        await ctx.send(embed=embed("❌ No Permission", "You don't have permission to use this command.", color=0xED4245))
+        return
+
+    info_embed = discord.Embed(
+        title="🛡️ Fonctionnement de la Transaction MM",
+        color=0x5865F2
+    )
+    info_embed.add_field(name="1️⃣ Sécurisation de l'objet", value="Le Vendeur donne l'objet en jeu au MM. Le MM confirme qu'il l'a bien dans son inventaire.", inline=False)
+    info_embed.add_field(name="2️⃣ Paiement Direct", value='Une fois que le MM confirme avoir l\'objet, l\'Acheteur envoie le paiement PayPal directement au Vendeur (généralement via "Entre proches").', inline=False)
+    info_embed.add_field(name="3️⃣ Preuve de Paiement", value="L'Acheteur envoie une capture d'écran du paiement effectué dans le groupe. Le Vendeur confirme qu'il a bien reçu les fonds sur son solde PayPal.", inline=False)
+    info_embed.add_field(name="4️⃣ Remise de l'objet", value='Dès que le Vendeur confirme la réception ("reçu"), le MM donne l\'objet en jeu à l\'Acheteur.', inline=False)
+    info_embed.add_field(name="5️⃣ Transaction Terminée", value="Le MM quitte la discussion et l'échange est validé.", inline=False)
+
+    await ctx.send(embed=info_embed, view=MMInfoView())
+
+
 # ══════════════════════════════════════════════════════════════════════════════
 # ── SUPPORT TICKET COMMANDS ───────────────────────────────────────────────────
 # ══════════════════════════════════════════════════════════════════════════════
