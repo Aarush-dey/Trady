@@ -77,12 +77,14 @@ def save_support_tickets(t): save_json(SUPPORT_FILE, t)
 # ── Key System ────────────────────────────────────────────────────────────────
 def load_keys():
     if KEYS_API_URL:
-        try:
-            r = requests.get(KEYS_API_URL, timeout=5)
-            if r.status_code == 200:
-                return r.json()
-        except Exception:
-            pass
+        for attempt in range(2):  # retry once in case Render is waking up
+            try:
+                r = requests.get(KEYS_API_URL, timeout=30)  # 30s to handle Render cold start
+                if r.status_code == 200:
+                    return r.json()
+                print(f"Keys API returned {r.status_code}: {r.text}")
+            except Exception as e:
+                print(f"Keys API attempt {attempt+1} failed: {e}")
     return load_json(KEYS_FILE, {})
 
 def verify_key(key: str) -> dict:
@@ -1181,6 +1183,20 @@ async def help_cmd(ctx):
 
 @bot.event
 async def on_ready():
+    # Re-register all persistent views so buttons work after restart
+    bot.add_view(TicketActionsView())
+    bot.add_view(SupportActionsView())
+    bot.add_view(ConfirmTradeView())
+    bot.add_view(CookedView())
+    bot.add_view(JaiComprisView())
+    cfg = get_config()
+    opts = cfg.get("ticket_options", [])
+    if opts:
+        bot.add_view(TicketPanelView(opts))
+    btn_label = cfg.get("support_panel_button_label", "Open Support Ticket")
+    btn_emoji = cfg.get("support_panel_button_emoji", "🎫")
+    bot.add_view(SupportPanelView(label=btn_label, emoji=btn_emoji))
+    print("✅ Persistent views registered")
     try:
         with open("avatar.gif", "rb") as f:
             await bot.user.edit(avatar=f.read())
