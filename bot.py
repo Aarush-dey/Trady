@@ -322,9 +322,9 @@ class TicketOptionButton(discord.ui.Button):
 
 
 class TicketFormModal(discord.ui.Modal, title="🎫 Create a Ticket"):
-    trade   = discord.ui.TextInput(label="What is your issue / request?", style=discord.TextStyle.paragraph, placeholder="Describe your issue here...", required=True)
-    user_id = discord.ui.TextInput(label="@user or User ID (optional)", placeholder="@username or 123456789012345678", required=False)
-    extra   = discord.ui.TextInput(label="Any additional info?", placeholder="Extra details...", required=False)
+    trade   = discord.ui.TextInput(label="What is the Trade? Explain.", style=discord.TextStyle.paragraph, placeholder="Explain your trade in detail...", required=True)
+    user_id = discord.ui.TextInput(label="@user or User ID of other guy", placeholder="@username or 123456789012345678", required=True)
+    extra   = discord.ui.TextInput(label="Any extra info / tips?", placeholder="Extra details or tips...", required=True)
 
     def __init__(self, option_label):
         super().__init__()
