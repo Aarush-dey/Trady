@@ -10,9 +10,12 @@ import io
 import re
 from collections import defaultdict
 from keep_alive import keep_alive
+from dotenv import load_dotenv
+
+# Load variables from the .env file
+load_dotenv()
 
 logging.getLogger("discord").setLevel(logging.CRITICAL)
-
 # ── Env Vars ──────────────────────────────────────────────────────────────────
 TICKET_BOT_TOKEN = os.getenv("TICKET_BOT_TOKEN")
 KEYS_API_URL     = os.getenv("KEYS_API_URL", "")
