@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)file:///C:/Users/HP/OneDrive/Desktop/logoanimation/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>Logo Hover Effect</title>
+    <style>
+        /* This is the CSS styling section */
+        body {
+            background-color: #121212;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .logo-box {
+            /* Adjust these numbers if your input_logo.jpg has different dimensions */
+            width: 200px; 
+            height: 200px;
+            background-image: url('static.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            cursor: pointer;
+        }
+
+        /* Triggers when the cursor hovers over the box */
+        .logo-box:hover {
+            background-image: url('spritesheet.jpg');
+            background-size: auto 100%;
+            /* Plays the 30-frame animation strip in 0.8 seconds */
+            animation: play-spiral 0.8s steps(30) forwards;
+        }
+
+        @keyframes play-spiral {
+            from { background-position: 0px; }
+            to { background-position: -6000px; } /* Formula: -1 * (logo width) * (30 frames) */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- This is the HTML structural element -->
+    <div class="logo-box"></div>
+
+
+
+</body></html>
