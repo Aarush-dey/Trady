@@ -5,14 +5,20 @@ import time
 import json
 import os
 import asyncio
+import requests
 import io
 import re
 from collections import defaultdict
 from keep_alive import keep_alive
+# 1. ADD THIS LINE:
+from dotenv import load_dotenv
+
+# 2. ADD THIS LINE:
+load_dotenv()
 
 logging.getLogger("discord").setLevel(logging.CRITICAL)
 
-# ── Env Vars ──────────────────────────────────────────────────────────────────
+# – Env Vars
 TICKET_BOT_TOKEN = os.getenv("TICKET_BOT_TOKEN")
 
 # ── Bot ───────────────────────────────────────────────────────────────────────
